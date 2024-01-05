@@ -1,0 +1,62 @@
+-- cria tabela
+CREATE TABLE chamados (
+    id SERIAL PRIMARY KEY,
+    numeroChamado VARCHAR(255),
+    status VARCHAR(255),
+    responsavel VARCHAR(255),
+    descricao TEXT,
+    dtCriacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    dataConclusao DATE,
+    projeto VARCHAR(255),
+    criador VARCHAR(255) NOT NULL,
+    tribunal VARCHAR(255),
+    consulta VARCHAR(255)
+);
+-- cria função para busca paginada
+
+CREATE OR REPLACE FUNCTION paginacao_chamados(pagina INT, registros_por_pagina INT)
+RETURNS SETOF chamados AS $$
+BEGIN
+    RETURN QUERY
+    SELECT * FROM chamados
+    ORDER BY id
+    LIMIT registros_por_pagina
+    OFFSET (pagina - 1) * registros_por_pagina;
+END;
+$$ LANGUAGE plpgsql;
+--função que busca
+SELECT * FROM paginacao_chamados(1,20);
+
+
+INSERT INTO chamados (numeroChamado, status, responsavel, descricao, dataConclusao, projeto, criador)
+VALUES
+    ('CH001', 'Aberto', 'Ana Silva', 'Problema com impressora', '2023-01-10', 'Projeto A', 'João Oliveira'),
+    ('CH002', 'Fechado', 'Carlos Pereira', 'Atualização de software', '2023-02-15', 'Projeto B', 'Mariana Santos'),
+    ('CH003', 'Aberto', 'Beatriz Lima', 'Configuração de rede', '2023-03-20', 'Projeto C', 'Lucas Oliveira'),
+    ('CH004', 'Fechado', 'Eduardo Souza', 'Problema no servidor', '2023-04-25', 'Projeto D', 'Isabela Pereira'),
+    ('CH005', 'Aberto', 'Fernanda Santos', 'Erro no aplicativo', '2023-05-30', 'Projeto E', 'Gustavo Lima'),
+    ('CH006', 'Fechado', 'Gabriel Oliveira', 'Atualização de firmware', '2023-06-05', 'Projeto F', 'Camila Souza'),
+    ('CH007', 'Aberto', 'Isabella Pereira', 'Problema de segurança', '2023-07-10', 'Projeto G', 'Matheus Silva'),
+    ('CH008', 'Fechado', 'Lucas Lima', 'Melhoria na interface', '2023-08-15', 'Projeto H', 'Amanda Oliveira'),
+    ('CH009', 'Aberto', 'Matheus Souza', 'Backup de dados', '2023-09-20', 'Projeto I', 'Pedro Santos'),
+    ('CH010', 'Fechado', 'Amanda Oliveira', 'Integração com API', '2023-10-25', 'Projeto J', 'Luana Lima'),
+    ('CH011', 'Aberto', 'Pedro Santos', 'Implementação de recurso', '2023-11-30', 'Projeto K', 'Rafael Oliveira'),
+    ('CH012', 'Fechado', 'Luana Lima', 'Problema de autenticação', '2023-12-05', 'Projeto L', 'Rodrigo Pereira'),
+    ('CH013', 'Aberto', 'Rafael Oliveira', 'Configuração de email', '2024-01-10', 'Projeto M', 'Carolina Lima'),
+    ('CH014', 'Fechado', 'Rodrigo Pereira', 'Manutenção de hardware', '2024-02-15', 'Projeto N', 'Fernanda Santos'),
+    ('CH015', 'Aberto', 'Carolina Lima', 'Treinamento de usuários', '2024-03-20', 'Projeto O', 'Eduardo Souza'),
+    ('CH016', 'Fechado', 'Gustavo Lima', 'Problema no banco de dados', '2024-04-25', 'Projeto P', 'Beatriz Lima'),
+    ('CH017', 'Aberto', 'Camila Souza', 'Desenvolvimento de módulo', '2024-05-30', 'Projeto Q', 'Carlos Pereira'),
+    ('CH018', 'Fechado', 'João Oliveira', 'Integração com sistema externo', '2024-06-05', 'Projeto R', 'Ana Silva'),
+    ('CH019', 'Aberto', 'Mariana Santos', 'Testes de performance', '2024-07-10', 'Projeto S', 'Eduardo Souza'),
+    ('CH020', 'Fechado', 'Lucas Oliveira', 'Problema de compatibilidade', '2024-08-15', 'Projeto T', 'Beatriz Lima');
+
+
+
+
+
+    CREATE TABLE usuarios (
+    id SERIAL PRIMARY KEY,
+    usuario VARCHAR(255) UNIQUE NOT NULL,
+    senha VARCHAR(255) NOT NULL
+);

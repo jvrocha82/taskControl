@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+
+<html>
+<header>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+
+</header>
+
+<body>
+
+    <div class="bodyContent">
+
+        <div id="tableHeader">
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#chamadoModal"
+                data-whatever="@mdo">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus"
+                    viewBox="0 0 16 16">
+                    <path
+                        d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4" />
+                </svg>
+            </button>
+        </div>
+        <table class="table table-striped" id="ListaChamados">
+            <thead>
+                <tr>
+                    <th class="col-2">Responsavel</th>
+                    <th class="col-1">Nº Chamado</th>
+
+                    <th class="col-1">Status</th>
+                    <th class="col-1">Tribunal</th>
+
+                    <th class="col-1">Projetos</th>
+                    <th class="col-2">Criador</th>
+
+
+
+                    <th class="col-2">Dt Abertura</th>
+                    <th class="col-2"></th>
+                </tr>
+            </thead>
+            <tbody id="ListaChamadosBody">
+
+            </tbody>
+        </table>
+
+    </div>
+
+    <div class="modal fade bd-example-modal-lg" id="exibeChamadoModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Dados do chamado</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div id="exibeModalChamado" class="modal-body">
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="chamadoModal" tabindex="-1" role="dialog" aria-labelledby="chamadoModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <form id="chamadoForm" action="/api/chamados" method="POST">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Criar Chamado</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col">
+
+                                    <label for="recipient-name" class="col-form-label">Nº Chamado:</label>
+
+                                    <input name="nChamado" type="text" class="form-control" placeholder="Nº Chamado">
+                                </div>
+                                <div class="col">
+
+                                    <label class="col-form-label">Projeto:</label>
+
+                                    <input class="form-control" list="projeto" name="projeto">
+                                    <datalist id="projeto">
+                                        <option value="Erobot">
+                                        <option value="GECP">
+                                        <option value="Documentos">
+                                        <option value="Federal Node">
+                                        <option value="TRF Node">
+                                        <option value="TRF Ori">
+
+                                    </datalist>
+                                </div>
+                            </div>
+                        </div>
+
+
+
+
+
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <label class="col-form-label">Link para versão:</label>
+                                    <input name="linkVersao" placeholder="Link para a versão" type="text"
+                                        class="form-control">
+                                </div>
+
+                                <div class="col">
+                                    <label for="recipient-name" class="col-form-label">Nº Versão:</label>
+
+                                    <input name="nVersao" type="text" class="form-control" placeholder="Nº Versão">
+                                </div>
+                            </div>
+                        </div>
+
+
+
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-md-4">
+
+                                    <label class="col-form-label">Segmento:</label>
+                                    <select name="segmento" id="segmento" class="form-control"
+                                        aria-label="Default select example">
+                                        <option selected>Segmento</option>
+                                        <option value="TJ">TJ (8)</option>
+                                        <option value="TRF">TRF (4)</option>
+                                        <option value="TRT">TRT (3)</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="recipient-name" class="col-form-label">Tribunal:</label>
+
+                                    <input name="tribunal" type="text" class="form-control" placeholder="Tribunal">
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="recipient-name" class="col-form-label">Consulta:</label>
+
+                                    <input name="consulta" type="text" class="form-control" placeholder="Consulta">
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Send message</button>
+                    </div>
+            </form>
+        </div>
+    </div>
+
+
+</body>
+<script>
+
+
+    function redirecionarParaLogin() {
+        // Limpar o token expirado (se estiver presente) - ajuste de acordo com seu método de armazenamento
+        limparToken();
+
+
+        // Redirecionar para a tela de login
+        window.location.href = '/login'; // Substitua com a rota correta
+    }
+    async function inicio() {
+
+
+        let chamados = await buscaChamados()
+        let listaUsuarios = await ListaUsuarios()
+        let optionUsers = preencheSelectUsuarios(listaUsuarios)
+        preencheTabelaChamados(chamados, optionUsers)
+
+
+
+    }
+
+    async function ListaUsuarios() {
+        let res;
+        var requestOptions = {
+            method: 'GET',
+            redirect: 'follow'
+        };
+
+        await fetch("/api/list", requestOptions)
+            .then(response => {
+                if (response.status === 401 || response.status === 403) {
+                    // Token expirado ou ausente, redirecionar para a tela de login
+                    redirecionarParaLogin();
+
+                } else {
+                    return response.json();
+                }
+
+            })
+            .then(result => res = result)
+            .catch(error => console.log({ error: error.message }));
+        return res.usuarios
+    }
+    function montaTabelaModalChamado(chamado) {
+        let tabela = `<table class="table table-hover">
+                        <thead>
+                          
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <th>Nº Chamado:</th>
+                            <td>${chamado.numerochamado}</td>
+                            <th>Projeto:</th>
+                            <td>${chamado.projeto}</td>
+
+                          </tr>
+                          <tr>
+                            <th>Criador:</th>
+                            <td>${chamado.criadornome}</td>
+                            <th>Responsavel:</th>
+                            <td>${chamado.responsavel}</td>
+                          </tr>
+                         
+                          <tr>
+                            <th>Status:</th>
+                            <td>${chamado.status}</td>
+                            <th>Tribunal: </th>
+                            <td>${chamado.segmento + ' - ' + chamado.tribunal + ' - ' + chamado.consulta}</td>
+                          </tr>
+                    
+                          <tr>
+                            <th >Data Criação</th>
+                            <td >${chamado.dtcriacao}</td>
+                            <th >Link Versão ${chamado.numeroversao != null ? chamado.numeroversao : ''}</th>
+                            <td ><a href="${chamado.linkversao}"  target="_blank" >${chamado.linkversao}</a></td>
+                          </tr>
+                        </tbody>
+                      </table>`
+        $('#exibeModalChamado').html(tabela);
+
+    }
+    function preencheSelectUsuarios(listaObj) {
+        var elementId = "responsavel"
+        var element = document.getElementById(elementId)
+        let option = [`<option> Não Atribuido </option>`];
+        for (let i = 0; i < listaObj.length; i++) {
+            option.push(`<option value='${listaObj[i].id}'> ${listaObj[i].usuario} </option>`)
+        }
+
+        return option
+    }
+
+    function preencheTabelaChamados(listaObj, optionUsuarios) {
+        var tableId = "ListaChamadosBody"
+        var bodyTable = document.getElementById(tableId)
+        let tabela = ``;
+
+        for (let i = 0; i < listaObj.length; i++) {
+            let currentUserList = [...optionUsuarios]
+            let current = listaObj[i]
+            let elementoProcurado = currentUserList.find(elemento => elemento.includes(`value='${current.responsavel}'`));
+
+            if (elementoProcurado !== undefined) {
+                // Remove o elemento do array usando splice
+                let indiceEncontrado = currentUserList.indexOf(elementoProcurado);
+
+                let elementoRemovido = currentUserList.splice(indiceEncontrado, 1);
+
+                // Adiciona o elemento removido ao início do array usando unshift
+                currentUserList.unshift(elementoRemovido[0]);
+
+            }
+
+            debugger
+
+            tabela += `<tr>
+                <td>
+                    <select onChange="alteraResponsavel(this.options[this.selectedIndex].value,${current.id})" name="segmento" id="segmento" class="form-control">
+                    ${currentUserList.join('')}
+                    </select>
+
+                    </td>
+         <td>${current.numerochamado}</td>
+         <td>${current.status}</td>
+         <td>${current.segmento+ ''  + current.tribunal  + current.consulta }</td>
+
+         <td>${current.projeto}</td>
+         <td>${current.criador}</td>
+
+         <td>${current.dtcriacao}</td>
+         
+            <td>
+              
+            <button type="button" onclick="reprovaValidacao(this, ${current.id})" class="btn btn-danger" 
+                data-whatever="@mdo">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x" viewBox="0 0 16 16">
+                    <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708"/>
+                </svg>
+
+            </button> 
+            <button type="button" onclick="finalizaValidacao(this, ${current.id})" class="btn btn-primary" 
+                data-whatever="@mdo">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check" viewBox="0 0 16 16">
+                    <path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z"/>
+                </svg>
+                </button>
+                <button type="button" onclick="exibeChamado(this, ${current.id})" class="btn btn-primary" 
+                data-whatever="@mdo">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-info-circle" viewBox="0 0 16 16">
+                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
+                    <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0"/>
+                </svg>
+                </button>
+                <a type="button" href="${current.linkversao}" target="_blank" class="btn btn-primary" 
+                data-whatever="@mdo">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-link" viewBox="0 0 16 16">
+                    <path d="M6.354 5.5H4a3 3 0 0 0 0 6h3a3 3 0 0 0 2.83-4H9q-.13 0-.25.031A2 2 0 0 1 7 10.5H4a2 2 0 1 1 0-4h1.535c.218-.376.495-.714.82-1z"/>
+                    <path d="M9 5.5a3 3 0 0 0-2.83 4h1.098A2 2 0 0 1 9 6.5h3a2 2 0 1 1 0 4h-1.535a4 4 0 0 1-.82 1H12a3 3 0 1 0 0-6z"/>
+                </svg>
+            </a>
+            </td>
+      </tr>`;
+        }
+        $('#ListaChamadosBody').html(tabela);
+    }
+
+
+    async function buscaUmChamado(id) {
+        let res;
+        var requestOptions = {
+            method: 'GET',
+            redirect: 'follow'
+        };
+
+        await fetch(`/api/chamados/${id}`, requestOptions)
+            .then(response => {
+                if (response.status === 401 || response.status === 403) {
+                    // Token expirado ou ausente, redirecionar para a tela de login
+                    redirecionarParaLogin();
+
+                } else {
+                    return response.json();
+                }
+
+            })
+            .then(result => res = result)
+            .catch(error => console.log({ error: error.message }));
+        return res.chamados.rows
+    }
+    async function alteraResponsavel(idResponsavel, idChamado) {
+        let res;
+        var myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
+
+        var urlencoded = new URLSearchParams();
+        urlencoded.append("idResponsavel", idResponsavel);
+        urlencoded.append("idChamado", idChamado);
+
+        var requestOptions = {
+            method: 'POST',
+            headers: myHeaders,
+            body: urlencoded,
+            redirect: 'follow'
+        };
+
+        await fetch("/api/chamados/alteraResponsavel", requestOptions)
+            .then(resposta => {
+                // Verificar se a resposta indica um problema de autenticação
+                if (!resposta.ok) {
+                    if (resposta.status === 401 || resposta.status === 403) {
+                        // Token expirado ou ausente, redirecionar para a tela de login
+                        redirecionarParaLogin();
+                        return;
+                    }
+
+                    // Outro tipo de erro, tratá-lo conforme necessário
+                    throw new Error('Erro na solicitação à API');
+                }
+
+                // Lógica para lidar com a resposta bem-sucedida
+
+            })
+            .then(e => {
+                inicio()
+            })
+            .catch(erro => {
+                console.error(erro.message);
+            });
+    }
+    async function exibeChamado(obj, id) {
+
+        let chamado = await buscaUmChamado(id)
+        debugger
+        montaTabelaModalChamado(chamado[0])
+        if (chamado.length > 0) {
+            $('#exibeChamadoModal').modal('show')
+        }
+    }
+    async function insereChamados(data) {
+        let res;
+        var requestOptions = {
+            method: 'POST',
+            redirect: 'follow'
+        };
+        debugger
+        await fetch("/api/chamados", requestOptions)
+            .then(resposta => {
+                // Verificar se a resposta indica um problema de autenticação
+                if (!resposta.ok) {
+                    if (resposta.status === 401 || resposta.status === 403) {
+                        // Token expirado ou ausente, redirecionar para a tela de login
+                        redirecionarParaLogin();
+                        return;
+                    }
+
+                    // Outro tipo de erro, tratá-lo conforme necessário
+                    throw new Error('Erro na solicitação à API');
+                }
+
+                // Lógica para lidar com a resposta bem-sucedida
+         
+            })
+            .then(dados => {
+                inicio()
+            })
+            .catch(erro => {
+                console.error(erro.message);
+            });
+        return res.chamados.rows
+
+    }
+    function limparToken() {
+        localStorage.removeItem('token');
+    }
+    function deleteElement(data) {
+
+
+        document.getElementById(data.parentElement.parentElement.parentElement.id).deleteRow(data.parentElement.parentElement.rowIndex - 1);
+    }
+    async function reprovaValidacao(obj, id) {
+        let res;
+        var myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
+        var urlencoded = new URLSearchParams();
+        urlencoded.append("id", id);
+        var requestOptions = {
+            method: 'POST',
+            headers: myHeaders,
+            body: urlencoded,
+            redirect: 'follow'
+        };
+
+        fetch("/api/chamados/reprova", requestOptions)
+            .then(response => response.json())
+            .then(result => res = result)
+            .catch(error => console.log(error))
+            .then(e => inicio());
+
+        return res.chamados.rows
+    }
+    async function finalizaValidacao(obj, id) {
+        let res;
+        var myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
+        var urlencoded = new URLSearchParams();
+        urlencoded.append("id", id);
+        var requestOptions = {
+            method: 'POST',
+            headers: myHeaders,
+            body: urlencoded,
+            redirect: 'follow'
+        };
+
+        fetch("/api/chamados/aprovar", requestOptions)
+            .then(response => response.json())
+            .then(result => res = result)
+            .catch(error => console.log(error))
+            .then(e => inicio());
+
+        return res.chamados.rows
+    }
+
+
+    async function buscaChamados() {
+        let res;
+        var requestOptions = {
+            method: 'GET',
+            redirect: 'follow'
+        };
+
+        await fetch("/api/chamados", requestOptions)
+            .then(response => {
+                if (response.status === 401 || response.status === 403) {
+                    // Token expirado ou ausente, redirecionar para a tela de login
+                    redirecionarParaLogin();
+
+                } else {
+                    return response.json();
+                }
+
+            })
+            .then(result => res = result)
+            .catch(error => console.log({ error: error.message }));
+        return res.chamados.rows
+    }
+    inicio()
+
+
+    $("#robo").on("change", function () {
+
+        showRoboData(this.checked ? "block" : "none")
+    });
+
+    function showRoboData(state) {
+        document.getElementById("tribunal").style.display = state;
+    }
+</script>
+
+<script>
+    // Função para abrir o modal
+    function abrirModal() {
+        document.getElementById('chamadoModal').style.display = 'block';
+    }
+
+    // Função para fechar o modal
+    function fecharModal() {
+        $('#chamadoModal').modal('hide');
+    }
+
+    // Função para ser executada quando o formulário for submetido
+    function onFormSubmit(event) {
+        // Sua lógica aqui
+        console.log('Formulário submetido!');
+        inicio()
+        // Fechar o modal
+        fecharModal();
+
+        // Impede que o formulário seja enviado normalmente
+
+    }
+
+    // Adiciona um ouvinte de evento ao evento submit do formulário]
+
+    document.getElementById('chamadoForm').addEventListener('submit', onFormSubmit);
+</script>
+<style>
+    .tdAprovado {
+        background-color: aqua;
+    }
+
+    .tdReprovado {
+        background-color: salmon;
+    }
+
+    body {
+        display: flex;
+        justify-content: center;
+    }
+
+    #tableHeader {
+        padding-top: 1%;
+        padding-bottom: 1%;
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-end;
+    }
+
+    .bodyContent {
+        justify-content: flex-end;
+        width: 95%;
+        height: auto;
+    }
+</style>
+
+</html>
